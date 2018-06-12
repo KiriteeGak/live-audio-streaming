@@ -20,18 +20,20 @@ def index_page():
 def start_record(type_):
     request_ = request.get_json()
     recording_name = request_['filename']
-    if type_ == 'start':
-        cls_ = AudioRecorder(audio_file_name=recording_name)
-        reference_dict[recording_name] = cls_
-        cls_.record()
-        return jsonify({"message": "Recording successfully started"})
-    elif type_ == 'stop':
-        print(reference_dict)
-        cls_ = reference_dict[recording_name]
-        cls_.stop()
-        return jsonify({"message": "Recording successfully stopped"})
-    else:
-        return jsonify({"message": "Unable to process get request"})
+    try:
+        if type_ == 'start':
+            cls_ = AudioRecorder(audio_file_name=recording_name)
+            reference_dict[recording_name] = cls_
+            cls_.record()
+            return jsonify({"message": "Recording successfully started"})
+        elif type_ == 'stop':
+            cls_ = reference_dict[recording_name]
+            cls_.stop()
+            return jsonify({"message": "Recording successfully stopped"})
+        else:
+            return jsonify({"message": "Unable to process get request"})
+    except KeyError:
+        return jsonify({"message": "Unable to find the class object to stop the instance"})
 
 
 @app.route(rule="/seek", methods=['POST'])

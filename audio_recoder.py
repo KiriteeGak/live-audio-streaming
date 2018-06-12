@@ -26,8 +26,9 @@ class AudioRecorder(object):
                                       channels=self.channels,
                                       rate=self.rate,
                                       input=True,
+                                      input_device_index=3,
                                       frames_per_buffer=self.frames_per_buffer)
-        self.start_time = None
+        self.start_time = time()
         self.elapsed_time = None
         self.chunks = 0
         self.audio_frames = []
